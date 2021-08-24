@@ -1,6 +1,7 @@
 # App artifacts
 _build
 deps
+priv
 
 # Static artifacts
 /node_modules

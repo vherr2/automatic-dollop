@@ -10,6 +10,7 @@ defmodule NpfWeb.Router do
   end
 
   pipeline :api do
+    plug CORSPlug, [origin: "http://localhost:4200"]
     plug :accepts, ["json"]
   end
 
