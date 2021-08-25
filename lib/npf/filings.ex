@@ -123,10 +123,12 @@ defmodule Npf.Filings do
   """
   def list_entities(entity, params) when entity in ["awards", "organizations"] do
     filters = Map.get(params, "filter", %{})
+    search_query = Map.get(params, "search", "")
 
     @entities
     |> Map.fetch!(entity)
     |> base_query(filters)
+    |> search(search_query)
     |> select([resource], resource)
     |> Repo.all()
   end
@@ -172,5 +174,14 @@ defmodule Npf.Filings do
     end)
   end
 
-  defp apply_filters(query, _filters), do: query  
+  defp apply_filters(query, _filters), do: query
+
+  defp search(query, search_query) when search_query != "" do
+    search_string = "%#{search_query}%"
+
+    query
+    |> Ecto.Query.where([entity], ilike(entity.name_line_1, ^search_string))
+  end
+
+  defp search(query, _search_query), do: query
 end
