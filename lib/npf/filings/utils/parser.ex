@@ -29,7 +29,7 @@ defmodule Npf.Filings.Utils.Parser do
     "RecipientNameBusiness/BusinessNameLine1",
     "RecipientBusinessName/BusinessNameLine1",
     "RecipientBusinessName/BusinessNameLine1Txt",
-    "RecipientUSAddress/AddressLine1Txt"
+    "RecipientPersonNm"
   ]
   @name_line_2 [
     "BusinessName/BusinessNameLine2",
@@ -37,8 +37,7 @@ defmodule Npf.Filings.Utils.Parser do
     "BusinessName/BusinessNameLine2Txt",
     "RecipientNameBusiness/BusinessNameLine2",
     "RecipientBusinessName/BusinessNameLine2",
-    "RecipientBusinessName/BusinessNameLine2Txt",
-    "RecipientUSAddress/AddressLine2Txt"
+    "RecipientBusinessName/BusinessNameLine2Txt"
   ]
   @state [
     "USAddress/State",
