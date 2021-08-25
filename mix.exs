@@ -20,7 +20,7 @@ defmodule Npf.MixProject do
   def application do
     [
       mod: {Npf.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -34,6 +34,7 @@ defmodule Npf.MixProject do
   defp deps do
     [
       {:cors_plug, "~> 2.0"},
+      {:ecto_psql_extras, "~> 0.6"},
       {:ecto_sql, "~> 3.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
