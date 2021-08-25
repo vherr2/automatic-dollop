@@ -98,9 +98,9 @@ defmodule Npf.Filings do
 
     Filing
     |> base_query(filters)
-    |> join(:inner, [filing], awards in assoc(filing, :awards))
+    |> join(:left, [filing], awards in assoc(filing, :awards))
     |> preload([filing, awards], awards: awards)
-    |> select([resource], resource)
+    |> select([filing], filing)
     |> Repo.all()
   end
 

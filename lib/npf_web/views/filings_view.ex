@@ -17,9 +17,10 @@ defmodule NpfWeb.FilingView do
     |> Map.update!(:awards, fn awards ->
       Enum.map(awards, &render_data(&1))
     end)
+    |> Map.put(:count_of_awards, data |> Map.get(:awards) |> Enum.count())
   end
 
-  def render_data(data = %struct{}) do
+  def render_data(data) do
     data
     |> Map.from_struct()
     |> Enum.reject(fn {k, _v} -> k |> Atom.to_string() |> String.starts_with?("__") end)
