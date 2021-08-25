@@ -19,5 +19,11 @@ defmodule NpfWeb.FilingView do
     end)
   end
 
-  def render_data(data = %struct{}), do: Map.take(data, struct.__schema__(:fields))
+  def render_data(data = %struct{}) do
+    data
+    |> Map.from_struct()
+    |> Enum.reject(fn {k, _v} -> k |> Atom.to_string() |> String.starts_with?("__") end)
+    |> Enum.reject(fn {_k, v} -> match?(%Ecto.Association.NotLoaded{}, v) end)
+    |> Enum.into(%{})
+  end
 end

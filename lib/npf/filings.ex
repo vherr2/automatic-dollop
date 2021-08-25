@@ -118,6 +118,18 @@ defmodule Npf.Filings do
     |> Repo.all()
   end
 
+  def list_awards(params) do
+    filters = Map.get(params, "filter", %{})
+
+    Award
+    |> base_query(filters)
+    |> join(:inner, [award], filing in assoc(award, :filing))
+    |> join(:inner, [_award, filing], filer in assoc(filing, :filer))
+    |> select([award], award)
+    |> select_merge([..., filer], %{filer_id: filer.id, filer_name: filer.name_line_1})
+    |> Repo.all()
+  end
+
   @doc """
   Returns a list of a given entity types.
   """

@@ -11,6 +11,9 @@ defmodule Npf.Filings.Award do
     field :purpose, :string
     field :amount, :integer
 
+    field :filer_id, :binary_id, virtual: true
+    field :filer_name, :string, virtual: true
+
     timestamps()
   end
 

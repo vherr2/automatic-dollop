@@ -9,10 +9,10 @@ defmodule NpfWeb.FilingController do
   defguardp is_valid_resource(resource) when resource in ["awards", "filings", "organizations"]
 
   @spec index(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def index(conn, params = %{"resource" => resource}) when resource in ["awards", "organizations"] do
-    data = Filings.list_entities(resource, params)
+  def index(conn, params = %{"resource" => "awards"}) do
+    data = Filings.list_awards(params)
 
-    render(conn, "#{resource}.json", data: data)
+    render(conn, "awards.json", data: data)
   end
 
   def index(conn, params = %{"resource" => "filings"}) do
@@ -25,6 +25,13 @@ defmodule NpfWeb.FilingController do
     data = Filings.list_receivers(params)
 
     render(conn, "receivers.json", data: data)
+  end
+
+  def index(conn, params) do
+    resource = params["resource"]
+    data = Filings.list_entities(resource, params)
+
+    render(conn, "#{resource}.json", data: data)
   end
 
   def index(conn, _params) do
