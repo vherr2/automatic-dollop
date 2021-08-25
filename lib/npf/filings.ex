@@ -139,8 +139,12 @@ defmodule Npf.Filings do
 
     Organization
     |> base_query(filters)
+    |> join(:left, [organization], filing in assoc(organization, :filings))
+    |> join(:left, [_organization, filing], award in assoc(filing, :awards))
     |> search(search_query)
+    |> group_by([resource], resource.id)
     |> select([resource], resource)
+    |> select_merge([..., award], %{awards_granted: count(award, :distinct)})
     |> Repo.all()
   end
 

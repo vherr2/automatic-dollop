@@ -12,6 +12,8 @@ defmodule Npf.Filings.Organization do
     field :state, :string
     field :zip_code, :string
 
+    field :awards_granted, :integer, virtual: true
+
     has_many :filings, Npf.Filings.Filing, foreign_key: :filer_id
     has_many :awards, Npf.Filings.Award, foreign_key: :receiver_id
 
