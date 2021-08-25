@@ -198,6 +198,15 @@ defmodule Npf.Filings do
 
   defp apply_filters(query, _filters), do: query
 
+  defmacrop concat_ws(fields) do
+    field_params = Enum.map_join(fields, "", fn _field -> ", ?" end)
+    fragment_string = "CONCAT_WS(' '#{field_params})"
+
+    quote do
+      fragment(unquote(fragment_string), unquote_splicing(fields))
+    end
+  end
+
   # TODO: replace this with TSVectors and TSQuery builders
   defp search(query, search_query) when search_query != "" do
     search_string =
@@ -207,8 +216,16 @@ defmodule Npf.Filings do
       |> List.insert_at(-1, "")
       |> Enum.join("%")
 
+    # TODO: use this for CONCAT_WS with dynamic field access
+    # search_fields =
+    # :fields
+    # |> Organization.__schema__()
+    # |> Enum.filter(fn field -> Organization.__schema__(:type, field) in [:string, :integer] end)
+
     query
-    |> Ecto.Query.where([entity], ilike(entity.name_line_1, ^search_string))
+    |> Ecto.Query.where([entity], ilike(concat_ws([
+      entity.address_line_1, entity.address_line_2, entity.city, entity.ein, entity.name_line_1, entity.name_line_2, entity.state, entity.zip_code
+    ]), ^search_string))
   end
 
   defp search(query, _search_query), do: query
