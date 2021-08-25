@@ -133,12 +133,11 @@ defmodule Npf.Filings do
   @doc """
   Returns a list of a given entity types.
   """
-  def list_entities(entity, params) when entity in ["awards", "organizations"] do
+  def list_organizations(params) do
     filters = Map.get(params, "filter", %{})
     search_query = Map.get(params, "search", "")
 
-    @entities
-    |> Map.fetch!(entity)
+    Organization
     |> base_query(filters)
     |> search(search_query)
     |> select([resource], resource)
@@ -188,8 +187,14 @@ defmodule Npf.Filings do
 
   defp apply_filters(query, _filters), do: query
 
+  # TODO: replace this with TSVectors and TSQuery builders
   defp search(query, search_query) when search_query != "" do
-    search_string = "%#{search_query}%"
+    search_string =
+      search_query
+      |> String.split()
+      |> List.insert_at(0, "")
+      |> List.insert_at(-1, "")
+      |> Enum.join("%")
 
     query
     |> Ecto.Query.where([entity], ilike(entity.name_line_1, ^search_string))

@@ -27,11 +27,10 @@ defmodule NpfWeb.FilingController do
     render(conn, "receivers.json", data: data)
   end
 
-  def index(conn, params) do
-    resource = params["resource"]
-    data = Filings.list_entities(resource, params)
+  def index(conn, params = %{"resource" => "organizations"}) do
+    data = Filings.list_organizations(params)
 
-    render(conn, "#{resource}.json", data: data)
+    render(conn, "organizations.json", data: data)
   end
 
   def index(conn, _params) do
