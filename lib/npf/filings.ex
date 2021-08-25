@@ -156,7 +156,14 @@ defmodule Npf.Filings do
   def get_entity("filings", params) do
     Npf.Filings.Filing
     |> Repo.get!(params["id"])
-    |> Repo.preload([:awards])
+    |> Repo.preload([awards: :receiver])
+    |> Map.update!(:awards, fn awards ->
+      Enum.map(awards, fn award ->
+        award
+        |> Map.put(:recipient_name, award.receiver.name_line_1)
+        |> Map.drop([:receiver])
+      end)
+    end)
   end
   
   def get_entity(entity, params) do
